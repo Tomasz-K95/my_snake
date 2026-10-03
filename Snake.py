@@ -1,17 +1,19 @@
 import pygame
 
+running = True
 
 def launching_the_game():
     pygame.init()
+    screen = pygame.display.set_mode((600, 600))
 
-    screen = pygame.display.set_mode((600, 800))
-    rysowanie_tla(screen)
-    running = True
     while running:
-        pass
-    pygame.display.flip()
+        rysowanie_tla(screen)
+        obsluga_zdarzeń()
+        pygame.display.flip()
+    pygame.quit()
 
 def obsluga_zdarzeń():
+    global running
     user_input = pygame.event.get()
     for event in user_input:
         if event.type == pygame.KEYDOWN:
@@ -23,9 +25,12 @@ def obsluga_zdarzeń():
                 pass
             elif event.key == pygame.K_d:
                 pass
-        if event.type == pygame.quit():
+        if event.type == pygame.QUIT:
             running = False
+            break
 
 
 def rysowanie_tla(screen):
-    return screen.fill((10,20,30))
+    return screen.fill((10,100,30))
+
+launching_the_game()
