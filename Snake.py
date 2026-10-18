@@ -10,7 +10,7 @@ klawisze = {pygame.K_w : (0,-20),
 def launching_the_game() -> None:
     pygame.init()
     screen = pygame.display.set_mode((600, 600))
-    snake = [(180, 150), (200, 150), (220, 150), (240,150), (260, 150)]
+    snake = [(180, 140), (200, 140), (220, 140), (240,140), (260, 140)]
     kierunek = (0, 20)
     jabko = losuj_jablka(snake)
     spowolnienie_gry = pygame.time.Clock()
@@ -20,7 +20,8 @@ def launching_the_game() -> None:
         kierunek = obsluga_zdarzen(kierunek)
         ruch_weza(snake, kierunek)
         rysowanie_weza(screen, snake)
-        spowolnienie_gry.tick(6)
+        spowolnienie_gry.tick(3)
+        rysowanie_jabka(screen,jabko)
         pygame.display.flip()
     pygame.quit()
 
@@ -68,15 +69,22 @@ def czy_przeciwny(kierunek1: tuple, kierunek2: tuple) -> bool:
     else:
         return False
 
-def losuj_jablka(snake:list[tuple]) -> None:
+def losuj_jablka(snake:list[tuple]) -> tuple:
 
     jabko_x = random.randrange(20, 600, 20)
     jabko_y = random.randrange(20, 600, 20)
     jabko = (jabko_x,jabko_y)
-    for elem in snake:
-        if jabko == elem:
-            jabko_x = random.randrange(20, 600, 20)
-            jabko_y = random.randrange(20, 600, 20)
+    while jabko in snake:
+        jabko_x = random.randrange(20, 600, 20)
+        jabko_y = random.randrange(20, 600, 20)
+        jabko = (jabko_x, jabko_y)
     return jabko
+def rysowanie_jabka(screen,jabko: tuple) -> None:
+    x, y = jabko
+    pygame.draw.circle(screen, (250, 0, 0), (x+10, y+10), 10)
+
+def jedzenie_jabka(snake, jabko) -> None:
+    if snake[-1] == jabko:
+        snake.insert(0, snake[0])
 
 launching_the_game()
