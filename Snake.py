@@ -20,7 +20,8 @@ def launching_the_game() -> None:
         kierunek = obsluga_zdarzen(kierunek)
         ruch_weza(snake, kierunek)
         rysowanie_weza(screen, snake)
-        spowolnienie_gry.tick(3)
+        spowolnienie_gry.tick(5)
+        jabko = jedzenie_jabka(snake, jabko)
         rysowanie_jabka(screen,jabko)
         pygame.display.flip()
     pygame.quit()
@@ -79,12 +80,30 @@ def losuj_jablka(snake:list[tuple]) -> tuple:
         jabko_y = random.randrange(20, 600, 20)
         jabko = (jabko_x, jabko_y)
     return jabko
+
 def rysowanie_jabka(screen,jabko: tuple) -> None:
     x, y = jabko
     pygame.draw.circle(screen, (250, 0, 0), (x+10, y+10), 10)
 
-def jedzenie_jabka(snake, jabko) -> None:
+def jedzenie_jabka(snake, jabko) -> tuple:
     if snake[-1] == jabko:
         snake.insert(0, snake[0])
+        jabko = losuj_jablka(snake)
+    return jabko
+
+
+def sciana_i_waz(snake):
+    x, y = snake[-1]
+    game_over = False
+    if x > 599 or y > 599:
+        game_over = True
+    if x < 0 or y < 0:
+        game_over = True
+    else:
+        for segment in snake[:-1]:
+            snake_x, snake_y = segment
+            if x == snake_x and y == snake_y:
+                game_over = True
+    return game_over
 
 launching_the_game()
