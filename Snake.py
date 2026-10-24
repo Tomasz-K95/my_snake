@@ -14,16 +14,19 @@ def launching_the_game() -> None:
     kierunek = (0, 20)
     jabko = losuj_jablka(snake)
     spowolnienie_gry = pygame.time.Clock()
+    game_over = False
+
 
     while running:
         rysowanie_tla(screen)
         kierunek = obsluga_zdarzen(kierunek)
         ruch_weza(snake, kierunek)
         rysowanie_weza(screen, snake)
-        spowolnienie_gry.tick(5)
         jabko = jedzenie_jabka(snake, jabko)
         rysowanie_jabka(screen,jabko)
+        game_over = sciana_i_waz(snake)
         pygame.display.flip()
+        spowolnienie_gry.tick(5)
     pygame.quit()
 
 
